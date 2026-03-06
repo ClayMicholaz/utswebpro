@@ -69,7 +69,7 @@ Install XAMPP / Laragon / WAMP.
 
 Clone the repository:
 
-git clone https://github.com/yourusername/lost-and-found-app.git
+git clone https://github.com/ClayMicholaz/utswebpro
 
 Move the project folder to:
 
