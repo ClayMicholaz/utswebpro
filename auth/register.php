@@ -68,7 +68,7 @@ unset(
                 </button>
             </div>
             <button type="submit" name="register">Sign Up</button>
-            <button type="button" id="login" name="login" onclick="window.location.href = 'login.php'">Login</button>
+                
         </form>
     </div>
     <script>
