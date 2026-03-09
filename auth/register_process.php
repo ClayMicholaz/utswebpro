@@ -21,14 +21,11 @@ if ($name === "") {
 if ($email === "") {
     $errors[] = "Email is required.";
 }
-if ($date_of_birth === "") {
-    $errors[] = "Date of Birth is required.";
-}
-if ($username === "") {
-    $errors[] = "Username is required.";
-}
 if ($password === "") {
     $errors[] = "Password is required.";
+}
+if ($phone=== "") {
+    $errors[] = "Phone number is required.";
 }
 if ($password !== $confirm_password) {
     $errors[] = "Passwords do not match.";
@@ -50,9 +47,9 @@ if (count($errors) === 0) {
         } else {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             $stmt = $db->conn->prepare(
-                "INSERT INTO tbl_users (name, email, date_of_birth, username, password) VALUES (?, ?, ?, ?, ?)"
+                "INSERT INTO tbl_users (name, email, password, phone) VALUES (?, ?, ?, ?)"
             );
-            $stmt->bind_param("sssss", $name, $email, $date_of_birth, $username, $hashed_password);
+            $stmt->bind_param("ssss", $name, $email, $hashed_password, $phone);
 
             if ($stmt->execute()) {
                 $_SESSION["register_success"] = "Registration successful. Please login.";
@@ -72,8 +69,7 @@ if (count($errors) > 0) {
     $_SESSION["register_errors"] = $errors;
     $_SESSION["register_name"] = $name;
     $_SESSION["register_email"] = $email;
-    $_SESSION["register_date_of_birth"] = $date_of_birth;
-    $_SESSION["register_username"] = $username;
+    $_SESSION["register_phone"] = $phone;
     header("Location: /utswebpro/auth/register.php");
     exit;
 }
