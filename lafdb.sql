@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `tbl_employee` (
   `date_of_birth` DATE DEFAULT NULL,
   `password` VARCHAR(255) NOT NULL,
   `role` ENUM('admin','user') NOT NULL,
-  `id_position` INT(11) NOT NULL,
+  `id_position` INT(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DELIMITER $$
@@ -60,7 +60,7 @@ CREATE TABLE `tbl_users` (
 ALTER TABLE `password_resets`
   ADD PRIMARY KEY (`username`);
 
-ALTER TABLE `tbl_employee`
+ALTER TABLE `tbl_position`
   ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `tbl_employee`
