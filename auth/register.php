@@ -5,16 +5,16 @@ $errors = $_SESSION["register_errors"] ?? [];
 $success = $_SESSION["register_success"] ?? "";
 $name = $_SESSION["register_name"] ?? "";
 $email = $_SESSION["register_email"] ?? "";
-$date_of_birth = $_SESSION["register_date_of_birth"] ?? "";
-$username = $_SESSION["register_username"] ?? "";
+$password = $_SESSION["register_password"] ?? "";
+$phone = $_SESSION["register_phone"] ?? "";
 
 unset(
     $_SESSION["register_errors"],
     $_SESSION["register_success"],
     $_SESSION["register_name"],
     $_SESSION["register_email"],
-    $_SESSION["register_date_of_birth"],
-    $_SESSION["register_username"]
+    $_SESSION["register_passsword"],
+    $_SESSION["register_phone"]
 );
 ?>
 
@@ -53,8 +53,8 @@ unset(
         <form action="register_process.php" method="post">
             <input type="text" name="name" placeholder="Name" value="<?=  htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?>" required>
             <input type="email" name="email" placeholder="Email" value="<?=  htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" required>
-            <input type="date" name="date_of_birth" placeholder="Date of Birth" value="<?=  htmlspecialchars($date_of_birth, ENT_QUOTES, 'UTF-8'); ?>" required>
-            <input type="text" name="username" placeholder="Username" value="<?=  htmlspecialchars($username, ENT_QUOTES, 'UTF-8'); ?>" required>
+            <input type="password" name="password" placeholder="Password" value="<?=  htmlspecialchars($password, ENT_QUOTES, 'UTF-8'); ?>" required>
+            <input type="text" name="phone" placeholder="Phone Number" value="<?=  htmlspecialchars($phone, ENT_QUOTES, 'UTF-8'); ?>" required>
             <div class = "password-field">
                 <input type="password" id="password" name="password" placeholder="Password" required>
                 <button type="button" class="toggle password" data-target="password" aria-label="show password">
