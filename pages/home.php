@@ -1,6 +1,28 @@
 <?php
 require_once __DIR__ . "/../core/auth.php";
+require_once __DIR__ . "/../config/database.php";
 auth::login_check();
+
+$items_listed = 0;
+$items_returned = 0;
+
+try {
+    $db = new database();
+
+    $result = $db->conn->query("SELECT COUNT(*) AS total FROM lost_items");
+    $lost_total = $result ? (int) $result->fetch_assoc()["total"] : 0;
+
+    $result = $db->conn->query("SELECT COUNT(*) AS total FROM found_items");
+    $found_total = $result ? (int) $result->fetch_assoc()["total"] : 0;
+
+    $items_listed = $lost_total + $found_total;
+
+    $result = $db->conn->query("SELECT COUNT(*) AS total FROM found_reports WHERE status = 'returned'");
+    $items_returned = $result ? (int) $result->fetch_assoc()["total"] : 0;
+} catch (Exception $e) {
+    $items_listed = 0;
+    $items_returned = 0;
+}
 ?>
 
 <!doctype html>
@@ -23,16 +45,16 @@ auth::login_check();
                 hub for your community.
             </p>
             <div class="hero__actions">
-                <a class="btn btn--primary" href="pages/report_lost.php">Report Lost</a>
-                <a class="btn btn--ghost" href="pages/report_found.php">Report Found</a>
+                <a class="btn btn--primary" href="report_lost.php">Report Lost</a>
+                <a class="btn btn--ghost" href="report_found.php">Report Found</a>
             </div>
             <div class="hero__stats">
                 <div>
-                    <span class="stat__value">2,419</span>
+                    <span class="stat__value"><?= number_format($items_listed); ?></span>
                     <span class="stat__label">Items listed</span>
                 </div>
                 <div>
-                    <span class="stat__value">1,032</span>
+                    <span class="stat__value"><?= number_format($items_returned); ?></span>
                     <span class="stat__label">Items returned</span>
                 </div>
             </div>
