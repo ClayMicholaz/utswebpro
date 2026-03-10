@@ -6,9 +6,30 @@
 
 .login-card > div p {
   font-size: 13px;
-  color: var(--accent-2);
 }
 
 .login-card > div p:not(:last-child) {
   margin-bottom: 6px;
+}
+
+.message.error p {
+  color: #b03030;
+  position: relative;
+  padding-left: 12px;
+  text-align: left;
+}
+
+.message.error p::before {
+  content: "-";
+  position: absolute;
+  left: 0;
+  color: #b03030;
+}
+
+.message.success p {
+  color: var(--accent-2);
+}
+
+.auth-switch {
+  margin-top: 12px;
 }

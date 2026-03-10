@@ -1,7 +1,9 @@
 <?php
 session_start();
+$errors = $_SESSION["change_password_errors"] ?? [];
+$success = $_SESSION["change_password_success"] ?? "";
+unset($_SESSION["change_password_errors"], $_SESSION["change_password_success"]);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,68 +11,55 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Change Password</title>
-
     <link rel="stylesheet" href="../assets/change_password.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
-
 </head>
 
 <body>
-
     <div class="login-card">
-
         <h2>Change Password</h2>
-
+        <?php if (count($errors) > 0): ?>
+            <div class="message error">
+                <?php foreach ($errors as $error): ?>
+                    <p><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+        <?php if ($success !== ""): ?>
+            <div class="message success">
+                <p><?= htmlspecialchars($success, ENT_QUOTES, 'UTF-8'); ?></p>
+                <p><a href="login.php">Login now</a></p>
+            </div>
+        <?php endif; ?>
         <form action="change_password_process.php" method="post">
-
             <input type="email" name="email" placeholder="Email" required>
-
             <div class="password-field">
                 <input type="password" id="new_password" name="new_password" placeholder="New Password" required>
-
-                <button type="button" class="toggle password" data-target="new_password">
-                    <i class="fa-solid fa-eye"></i>
-                </button>
+                <button type="button" class="toggle password" data-target="new_password"><i
+                        class="fa-solid fa-eye"></i></button>
             </div>
-
             <div class="password-field">
                 <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password"
                     required>
-
-                <button type="button" class="toggle password" data-target="confirm_password">
-                    <i class="fa-solid fa-eye"></i>
-                </button>
+                <button type="button" class="toggle password" data-target="confirm_password"><i
+                        class="fa-solid fa-eye"></i></button>
             </div>
-
             <button type="submit" name="change">Change Password</button>
-
         </form>
-
     </div>
-
     <script>
-
         document.querySelectorAll(".toggle.password").forEach(function (button) {
-
             button.addEventListener("click", function () {
-
                 let targetid = button.getAttribute("data-target");
                 let input = document.getElementById(targetid);
                 let icon = button.querySelector("i");
-
                 let ispassword = input.type === "password";
-
                 input.type = ispassword ? "text" : "password";
-
                 icon.classList.toggle("fa-eye");
                 icon.classList.toggle("fa-eye-slash");
-
             });
-
         });
-
     </script>
-
 </body>
 
 </html>

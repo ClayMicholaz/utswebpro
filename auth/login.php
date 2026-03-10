@@ -13,19 +13,17 @@
 
 <body>
     <div class="login-card">
-        <h2> Login System </h2>
+        <h2>Login System</h2>
         <form action="login_process.php" method="post">
             <input type="text" name="email" placeholder="Email" required>
             <div class="password-field">
                 <input type="password" id="password" name="password" placeholder="Password" required>
-                <button type="button" class="toggle password" data-target="password" aria-label="show password">
-                    <i class="fa-solid fa-eye"></i>
-                </button>
+                <button type="button" class="toggle password" data-target="password" aria-label="show password"><i
+                        class="fa-solid fa-eye"></i></button>
             </div>
             <button type="submit" name="login">Sign In</button>
-            <p> <a href="change_password.php">Forgot Password?</a></p>
-            <button type="button" id="register" name="register"
-                onclick="window.location.href = 'register.php'">Register</button>
+            <p class="auth-switch">Don't have an account? <a href="register.php">Sign up</a></p>
+            <p><a href="change_password.php">Forgot Password?</a></p>
         </form>
     </div>
     <script>

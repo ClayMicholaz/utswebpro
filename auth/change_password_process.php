@@ -1,42 +1,46 @@
 <?php
 require_once "../config/database.php";
 session_start();
-
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     header("Location: change_password.php");
     exit();
 }
-
 $email = trim($_POST["email"] ?? "");
 $new_password = trim($_POST["new_password"] ?? "");
 $confirm_password = trim($_POST["confirm_password"] ?? "");
-
 $errors = [];
-
 if ($email === "") {
     $errors[] = "Email is required.";
 }
-
 if ($new_password === "") {
     $errors[] = "New password is required.";
 }
-
 if ($confirm_password === "") {
     $errors[] = "Confirm password is required.";
 }
-
 if ($new_password !== $confirm_password) {
     $errors[] = "Passwords do not match.";
 }
 
-if (count($errors) > 0) {
-    foreach ($errors as $error) {
-        echo $error . "<br>";
+if ($new_password !== "") {
+    if (strlen($new_password) < 8) {
+        $errors[] = "Password must be at least 8 characters long.";
     }
-    echo "<br><a href='change_password.php'>Back</a>";
+
+    $has_upper = preg_match("/[A-Z]/", $new_password);
+    $has_lower = preg_match("/[a-z]/", $new_password);
+    $has_digit = preg_match("/[0-9]/", $new_password);
+    $has_symbol = preg_match("/[^A-Za-z0-9]/", $new_password);
+
+    if (!$has_upper || !$has_lower || !$has_digit || !$has_symbol) {
+        $errors[] = "Password must include uppercase, lowercase, number, and symbol.";
+    }
+}
+if (count($errors) > 0) {
+    $_SESSION["change_password_errors"] = $errors;
+    header("Location: change_password.php");
     exit();
 }
-
 try {
 
     $db = new database();
@@ -47,8 +51,8 @@ try {
     $result = $stmt->get_result();
 
     if ($result->num_rows === 0) {
-        echo "Email not found.<br>";
-        echo "<a href='change_password.php'>Back</a>";
+        $_SESSION["change_password_errors"] = ["Email not found."];
+        header("Location: change_password.php");
         exit();
     }
 
@@ -60,15 +64,20 @@ try {
     $stmt->bind_param("ss", $hashed_password, $email);
 
     if ($stmt->execute()) {
-        echo "Password successfully changed.<br>";
-        echo "<a href='login.php'>Login Now</a>";
-    } else {
-        echo "Failed to update password.";
+        $_SESSION["change_password_success"] = "Password successfully changed.";
+        header("Location: change_password.php");
+        exit();
     }
+
+    $_SESSION["change_password_errors"] = ["Failed to update password."];
+    header("Location: change_password.php");
+    exit();
 
     $stmt->close();
 
 } catch (Exception $e) {
-    echo "Database error.";
+    $_SESSION["change_password_errors"] = ["Database error."];
+    header("Location: change_password.php");
+    exit();
 }
 ?>

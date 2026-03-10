@@ -23,7 +23,21 @@ if ($email === "") {
 if ($password === "") {
     $errors[] = "Password is required.";
 }
-if ($phone=== "") {
+if ($password !== "") {
+    if (strlen($password) < 8) {
+        $errors[] = "Password must be at least 8 characters long.";
+    }
+
+    $has_upper = preg_match("/[A-Z]/", $password);
+    $has_lower = preg_match("/[a-z]/", $password);
+    $has_digit = preg_match("/[0-9]/", $password);
+    $has_symbol = preg_match("/[^A-Za-z0-9]/", $password);
+
+    if (!$has_upper || !$has_lower || !$has_digit || !$has_symbol) {
+        $errors[] = "Password must include uppercase, lowercase, number, and symbol.";
+    }
+}
+if ($phone === "") {
     $errors[] = "Phone number is required.";
 }
 if ($password !== $confirm_password) {
@@ -60,8 +74,8 @@ if (count($errors) === 0) {
             $stmt->close();
         }
     } catch (Exception $e) {
-    $errors[] = $e->getMessage();
-}
+        $errors[] = $e->getMessage();
+    }
 }
 
 if (count($errors) > 0) {

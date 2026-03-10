@@ -1,21 +1,21 @@
 <?php
 require_once "../core/auth.php";
 
-if($_SERVER["REQUEST_METHOD"] !== "POST"){
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     header("Location: login.php");
     exit();
 }
 
 $auth = new auth();
-if(isset($_POST["login"])){
+if (isset($_POST["login"])) {
 
     $names = $_POST["email"];
     $password = $_POST["password"];
 
-    if($auth->Login($names, $password)){
-        header("location: /utswebpro/index.php");
-    } else{
+    if ($auth->Login($names, $password)) {
+        header("location: /utswebpro/pages/home.php");
+    } else {
         echo "Login Gagal";
     }
-var_dump($_POST);
+    var_dump($_POST);
 }
