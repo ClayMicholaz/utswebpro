@@ -13,7 +13,7 @@ unset(
     $_SESSION["register_success"],
     $_SESSION["register_name"],
     $_SESSION["register_email"],
-    $_SESSION["register_passsword"],
+    $_SESSION["register_password"],
     $_SESSION["register_phone"]
 );
 ?>
@@ -26,14 +26,13 @@ unset(
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lost and Found</title>
     <link rel="stylesheet" href="../assets/css/register.css">
-    <link rel="stylesheet" href="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
     <div class="login-card">
-        <div>
-            <img src="../assets/logo.png" alt="Logo">
-        </div>
         <h2> Register System</h2>
 
         <?php if (count($errors) > 0): ?>
@@ -53,7 +52,6 @@ unset(
         <form action="register_process.php" method="post">
             <input type="text" name="name" placeholder="Name" value="<?=  htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?>" required>
             <input type="email" name="email" placeholder="Email" value="<?=  htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" required>
-            <input type="password" name="password" placeholder="Password" value="<?=  htmlspecialchars($password, ENT_QUOTES, 'UTF-8'); ?>" required>
             <input type="text" name="phone" placeholder="Phone Number" value="<?=  htmlspecialchars($phone, ENT_QUOTES, 'UTF-8'); ?>" required>
             <div class = "password-field">
                 <input type="password" id="password" name="password" placeholder="Password" required>

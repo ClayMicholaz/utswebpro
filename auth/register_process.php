@@ -10,9 +10,8 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 $errors = [];
 $name = trim($_POST["name"] ?? "");
 $email = trim($_POST["email"] ?? "");
-$date_of_birth = trim($_POST["date_of_birth"] ?? "");
-$username = trim($_POST["username"] ?? "");
-$password = $_POST["password"] ?? "";
+$password = trim($_POST["password"] ?? "");
+$phone = trim($_POST["phone"] ?? "");
 $confirm_password = $_POST["confirm_password"] ?? "";
 
 if ($name === "") {
@@ -35,19 +34,19 @@ if (count($errors) === 0) {
     try {
         $db = new database();
 
-        $stmt = $db->conn->prepare("SELECT id FROM tbl_users WHERE username = ?");
-        $stmt->bind_param("s", $username);
+        $stmt = $db->conn->prepare("SELECT id FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
         $exists = ($result && $result->num_rows > 0);
         $stmt->close();
 
         if ($exists) {
-            $errors[] = "Username already exists.";
+            $errors[] = "Email already exists.";
         } else {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             $stmt = $db->conn->prepare(
-                "INSERT INTO tbl_users (name, email, password, phone) VALUES (?, ?, ?, ?)"
+                "INSERT INTO users (name, email, password, phone) VALUES (?, ?, ?, ?)"
             );
             $stmt->bind_param("ssss", $name, $email, $hashed_password, $phone);
 
@@ -61,8 +60,8 @@ if (count($errors) === 0) {
             $stmt->close();
         }
     } catch (Exception $e) {
-        $errors[] = "Database connection error.";
-    }
+    $errors[] = $e->getMessage();
+}
 }
 
 if (count($errors) > 0) {
