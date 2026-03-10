@@ -1,75 +1,86 @@
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+CREATE DATABASE IF NOT EXISTS lafdb;
+USE lafdb;
 
-CREATE TABLE IF NOT EXISTS `tbl_employee` (
-  `id` INT (11) NOT NULL,
-  `name` VARCHAR(100) NOT NULL,
-  `email` VARCHAR(50) NOT NULL,
-  `username` VARCHAR(100) NOT NULL,
-  `date_of_birth` DATE DEFAULT NULL,
-  `password` VARCHAR(255) NOT NULL,
-  `role` ENUM('admin','user') NOT NULL,
-  `id_position` INT(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- TABLE users
+CREATE TABLE users (
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(100) NOT NULL,
+email VARCHAR(100) NOT NULL UNIQUE,
+password VARCHAR(255) NOT NULL,
+phone VARCHAR(20),
+role ENUM('admin','user') NOT NULL DEFAULT 'user',
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
-DELIMITER $$
-CREATE TRIGGER `tgr_delete_user` BEFORE DELETE ON `tbl_employee` FOR EACH ROW DELETE FROM tbl_users
-WHERE username = OLD.username
-$$
-DELIMITER ;
-DELIMITER $$
-CREATE TRIGGER `tgr_insert_user` AFTER INSERT ON `tbl_employee` FOR EACH ROW INSERT INTO tbl_users(username, password, role)
-	VALUES(
-        NEW.username,
-        NEW.password,
-        NEW.role
-        )
-$$
-DELIMITER ;
-DELIMITER $$
-CREATE TRIGGER `tgr_update_user` AFTER UPDATE ON `tbl_employee` FOR EACH ROW UPDATE tbl_users
-SET
-	username = NEW.username,
-    password = NEW.password,
-    role = NEW.role
-WHERE username = OLD.username
-$$
-DELIMITER ;
+-- TABLE lost_items
+CREATE TABLE lost_items (
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+item_name VARCHAR(150) NOT NULL,
+description TEXT,
+category VARCHAR(100),
+color VARCHAR(50),
+brand VARCHAR(100),
+image VARCHAR(255),
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
-CREATE TABLE `password_resets` (
-  `username` varchar(50) NOT NULL,
-  `token` varchar(255) NOT NULL,
-  `expires_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- TABLE found_items
+CREATE TABLE found_items (
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+item_name VARCHAR(150) NOT NULL,
+description TEXT,
+category VARCHAR(100),
+color VARCHAR(50),
+brand VARCHAR(100),
+image VARCHAR(255),
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
-CREATE TABLE `tbl_position` (
-  `id` int(11) NOT NULL,
-  `position` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- TABLE lost_reports
+CREATE TABLE lost_reports (
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+user_id BIGINT NOT NULL,
+lost_item_id BIGINT NOT NULL,
+location_lost VARCHAR(255),
+date_lost DATE,
+description TEXT,
+status ENUM('open','found','closed') DEFAULT 'open',
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+FOREIGN KEY (lost_item_id) REFERENCES lost_items(id) ON DELETE CASCADE
+);
 
-INSERT INTO `tbl_position` (`id`, `position`) VALUES
-(1, 'Admin');
+-- TABLE found_reports
+CREATE TABLE found_reports (
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+user_id BIGINT NOT NULL,
+found_item_id BIGINT NOT NULL,
+location_found VARCHAR(255),
+date_found DATE,
+description TEXT,
+status ENUM('available','claimed','returned') DEFAULT 'available',
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+FOREIGN KEY (found_item_id) REFERENCES found_items(id) ON DELETE CASCADE
+);
 
-CREATE TABLE `tbl_users` (
-  `username` varchar(50) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `role` enum('admin','user') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-ALTER TABLE `password_resets`
-  ADD PRIMARY KEY (`username`);
-
-ALTER TABLE `tbl_position`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `tbl_employee`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_position` (`id_position`);
-
-ALTER TABLE `tbl_position`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
-ALTER TABLE `tbl_employee`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-COMMIT;
+-- TABLE item_claims
+CREATE TABLE item_claims (
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+user_id BIGINT NOT NULL,
+found_report_id BIGINT NOT NULL,
+claim_description TEXT,
+proof_image VARCHAR(255),
+status ENUM('pending','approved','rejected') DEFAULT 'pending',
+approved_by BIGINT,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+FOREIGN KEY (found_report_id) REFERENCES found_reports(id) ON DELETE CASCADE,
+FOREIGN KEY (approved_by) REFERENCES users(id) ON DELETE SET NULL
+);

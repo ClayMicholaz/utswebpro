@@ -10,126 +10,138 @@
   --shadow: rgba(76, 56, 36, 0.25);
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body{
+body {
   font-family: "Libre Franklin", sans-serif;
   color: var(--text);
-
   background:
     radial-gradient(1200px 900px at 10% 10%, #fff8ef 0%, transparent 60%),
     radial-gradient(900px 700px at 90% 20%, #efe1cf 0%, transparent 55%),
     linear-gradient(160deg, #f7f0e6 0%, #efe3d2 100%);
-
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.login-card{
-  width:360px;
-  background: rgba(255,248,239,0.95);
-  backdrop-filter: blur(6px);
-
-  border-radius:20px;
-  padding:40px;
-
-  box-shadow:0 24px 80px var(--shadow);
-
-  text-align:center;
+body::before {
+  content: "";
+  position: absolute;
+  inset: -20px;
+  background: url("./bg-login.jpg") center/cover no-repeat;
+  transform: scale(1.05);
+  z-index: 0;
 }
 
-.login-card h2{
-  font-family:"Cormorant Garamond", serif;
-  font-size:2rem;
-  margin-bottom:25px;
+body::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(247, 240, 230, 0.08);
+  z-index: 1;
 }
 
-.login-card input{
-  width:100%;
-  padding:12px;
-  margin-bottom:15px;
-
-  border-radius:10px;
-  border:1px solid rgba(47,32,18,0.25);
-
-  background:#fff8ef;
-
-  font-size:14px;
+.login-card {
+  width: 360px;
+  background: rgba(255, 248, 239, 0.01);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 24px 80px var(--shadow);
+  text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
-.login-card input:focus{
-  outline:none;
-  border-color:var(--accent);
+.login-card h2 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 2rem;
+  margin-bottom: 25px;
 }
 
-.password-field{
-  position:relative;
+.login-card input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: 1px solid rgba(47, 32, 18, 0.25);
+  background: #fff8ef;
+  font-size: 14px;
 }
 
-.password-field button{
-  position:absolute;
-  right:10px;
-  top:50%;
-  transform:translateY(-50%);
-
-  border:none;
-  background:none;
-  cursor:pointer;
-
-  color:var(--muted);
+.login-card input:focus {
+  outline: none;
+  border-color: var(--accent);
 }
 
-button[type="submit"]{
-  width:100%;
-  padding:12px;
-
-  border:none;
-  border-radius:999px;
-
-  font-weight:600;
-
-  background:var(--accent);
-  color:#2f2012;
-
-  margin-top:10px;
-
-  cursor:pointer;
-
-  transition:all 0.2s ease;
+.password-field {
+  position: relative;
 }
 
-button[type="submit"]:hover{
-  transform:translateY(-2px);
-  box-shadow:0 10px 30px rgba(196,138,74,0.4);
+.password-field button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0 6px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--muted);
 }
 
-.login-card a{
-  text-decoration:none;
-  color:var(--accent-2);
-  font-size:14px;
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 999px;
+  font-weight: 600;
+  background: var(--accent);
+  color: #2f2012;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-#register{
-  width:100%;
-  margin-top:10px;
-  padding:12px;
-
-  border-radius:999px;
-
-  border:1px solid rgba(47,32,18,0.25);
-  background:rgba(255,248,239,0.8);
-
-  cursor:pointer;
-  transition:all 0.2s ease;
+button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(196, 138, 74, 0.4);
 }
 
-#register:hover{
-  transform:translateY(-2px);
-  box-shadow:0 14px 32px rgba(0,0,0,0.25);
+.login-card a {
+  text-decoration: none;
+  color: var(--accent-2);
+  font-size: 14px;
+}
+
+.login-card p {
+  margin-top: 8px;
+  margin-bottom: 10px;
+}
+
+#register {
+  width: 100%;
+  padding: 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(47, 32, 18, 0.25);
+  background: rgba(255, 248, 239, 0.8);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#register:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.25);
 }

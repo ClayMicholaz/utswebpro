@@ -1,6 +1,14 @@
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
+@import url("./login.css");
+
+.login-card > div {
+  margin-bottom: 12px;
 }
 
+.login-card > div p {
+  font-size: 13px;
+  color: var(--accent-2);
+}
+
+.login-card > div p:not(:last-child) {
+  margin-bottom: 6px;
+}

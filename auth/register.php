@@ -25,7 +25,7 @@ unset(
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lost and Found</title>
-    <link rel="stylesheet" href="../assets/css/register.css">
+    <link rel="stylesheet" href="../assets/register.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
         integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -38,40 +38,44 @@ unset(
         <?php if (count($errors) > 0): ?>
             <div>
                 <?php foreach ($errors as $error): ?>
-                    <p><?=  htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
+                    <p><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
 
         <?php if ($success !== ""): ?>
             <div>
-                <p><?=  htmlspecialchars($success, ENT_QUOTES, 'UTF-8'); ?></p>
+                <p><?= htmlspecialchars($success, ENT_QUOTES, 'UTF-8'); ?></p>
             </div>
         <?php endif; ?>
 
         <form action="register_process.php" method="post">
-            <input type="text" name="name" placeholder="Name" value="<?=  htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?>" required>
-            <input type="email" name="email" placeholder="Email" value="<?=  htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" required>
-            <input type="text" name="phone" placeholder="Phone Number" value="<?=  htmlspecialchars($phone, ENT_QUOTES, 'UTF-8'); ?>" required>
-            <div class = "password-field">
+            <input type="text" name="name" placeholder="Name"
+                value="<?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?>" required>
+            <input type="email" name="email" placeholder="Email"
+                value="<?= htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>" required>
+            <input type="text" name="phone" placeholder="Phone Number"
+                value="<?= htmlspecialchars($phone, ENT_QUOTES, 'UTF-8'); ?>" required>
+            <div class="password-field">
                 <input type="password" id="password" name="password" placeholder="Password" required>
                 <button type="button" class="toggle password" data-target="password" aria-label="show password">
                     <i class="fa-solid fa-eye"></i>
                 </button>
             </div>
-            <div class = "password-field">
-                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
+            <div class="password-field">
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password"
+                    required>
                 <button type="button" class="toggle password" data-target="confirm_password" aria-label="show password">
                     <i class="fa-solid fa-eye"></i>
                 </button>
             </div>
             <button type="submit" name="register">Sign Up</button>
-                
+
         </form>
     </div>
     <script>
         document.querySelectorAll(".toggle.password").forEach(function (button) {
-            button.addEventListener("click", function() {
+            button.addEventListener("click", function () {
                 let targetid = button.getAttribute("data-target");
                 let input = document.getElementById(targetid);
                 let icon = button.querySelector("i");
@@ -87,4 +91,5 @@ unset(
         });
     </script>
 </body>
+
 </html>
