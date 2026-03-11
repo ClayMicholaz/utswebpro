@@ -1,151 +1,159 @@
-🔎 Lost & Found Web Application
+# Lost & Found Web Application
 
-A simple Lost and Found Web Application developed for the Mid-Term Web Programming Exam (UTS Web Programming).
+A PHP + MySQL web application for reporting lost and found items, browsing reports, and verifying item return claims.
 
-This web application allows users to report lost items, report found items, and browse through the listings to help reconnect items with their rightful owners.
+Repository: https://github.com/ClayMicholaz/utswebpro
 
-🔗 Repository:
-https://github.com/ClayMicholaz/utswebpro
+## Overview
 
-📌 Project Overview
+This project helps users:
 
-The Lost & Found App is designed to assist people in reporting and locating lost belongings. Users can post information about items they have lost or found and search through reports submitted by others.
+- Report lost items
+- Report found items
+- Browse and search item reports
+- View item details
 
-This project demonstrates fundamental full-stack web development skills using front-end and back-end technologies.
+It also includes an admin workflow:
 
-🛠 Technologies Used
-Technology	Description
-HTML5	Page structure
-CSS3	Styling and layout
-Bootstrap	Responsive UI framework
-JavaScript	Client-side interactivity and form validation
-PHP	Server-side scripting
-MySQL	Database for storing item reports
-✨ Features
+- Admin-only dashboard
+- Claim return approval flow
+- Approved returns recorded in `item_claims`
 
-📄 Report lost items
+## Tech Stack
 
-📄 Report found items
+- PHP (server-side)
+- MySQL (database)
+- HTML/CSS/JavaScript (frontend)
 
-🔍 Browse lost and found item listings
+## Features
 
-📑 View item details
+- User authentication:
+  - Register
+  - Login
+  - Change password
+  - Logout
+- Role-based redirect after login:
+  - `user` -> `pages/home.php`
+  - `admin` -> `pages/admin_dashboard.php`
+- Lost/found reporting with optional image upload
+- Lost/found item listing pages with:
+  - Search by item name or report ID
+  - Date filter
+- Item detail page
+- Admin dashboard with:
+  - Role protection
+  - Lost and found report overview
+  - Search/filter/date controls
+  - Return approval form
+  - Auto-update of `found_reports.status` to `returned`
+  - Insert approved claim into `item_claims`
+- Shared site layout components:
+  - Reusable navbar (`includes/navbar.php`)
+  - Reusable footer (`includes/footer.php`)
+  - Shared layout styles (`assets/layout.css`)
 
-📱 Responsive UI using Bootstrap
+## Current Project Structure
 
-✔ Basic form validation using JavaScript
+```text
+utswebpro/
+|- index.php
+|- lafdb.sql
+|- README.md
+|- assets/
+|  |- admin_dashboard.css
+|  |- change_password.css
+|  |- home.css
+|  |- home.js
+|  |- item_detail.css
+|  |- items.css
+|  |- layout.css
+|  |- login.css
+|  |- register.css
+|  |- report.css
+|- auth/
+|  |- change_password.php
+|  |- change_password_process.php
+|  |- login.php
+|  |- login_process.php
+|  |- logout.php
+|  |- register.php
+|  |- register_process.php
+|- config/
+|  |- database.php
+|- controllers/
+|  |- authController.php
+|  |- reportFoundController.php
+|  |- reportLostController.php
+|- core/
+|  |- auth.php
+|- includes/
+|  |- footer.php
+|  |- functions.php
+|  |- header.php
+|  |- navbar.php
+|- pages/
+|  |- admin_dashboard.php
+|  |- found_items.php
+|  |- home.php
+|  |- item_detail.php
+|  |- lost_items.php
+|  |- report_found.php
+|  |- report_lost.php
+|- screenshots/
+|- uploads/
+	 |- found/
+	 |- lost/
+```
 
-💾 Store and retrieve item data using PHP and MySQL
+## Database
 
-📂 Project Structure
-utswebpro
-│
-├── index.php                # Home page
-├── login.php                # Login page
-├── register.php             # User registration
-│
-├── pages/
-│   ├── lost_items.php
-│   ├── found_items.php
-│   ├── report_lost.php
-│   ├── report_found.php
-│   └── item_detail.php
-│
-├── config/
-│   └── database.php         # Database connection
-│
-├── controllers/
-│   ├── reportLostController.php
-│   ├── reportFoundController.php
-│   └── authController.php
-│
-├── includes/
-│   ├── header.php
-│   ├── navbar.php
-│   ├── footer.php
-│   └── functions.php
-│
-├── assets/
-│   ├── css/
-│   │   └── style.css
-│   │
-│   ├── js/
-│   │   └── script.js
-│   │
-│   ├── images/
-│   │
-│   └── uploads/
-│
-├── database/
-│   └── lost_found.sql
-│
-└── README.md
-🚀 Installation & Setup
+Database schema file: `lafdb.sql`
 
-Follow these steps to run the project locally:
+Main tables:
 
-1️⃣ Clone the repository
-git clone https://github.com/ClayMicholaz/utswebpro.git
-2️⃣ Move the project to your server directory
+- `users`
+- `lost_items`
+- `found_items`
+- `lost_reports`
+- `found_reports`
+- `item_claims`
 
-Example for XAMPP:
+## Installation (XAMPP)
 
-htdocs/
+1. Clone the repository:
 
-Example path:
+   ```bash
+   git clone https://github.com/ClayMicholaz/utswebpro.git
+   ```
 
-C:\xampp\htdocs\utswebpro
-3️⃣ Start Apache and MySQL
+2. Move project folder to XAMPP htdocs:
 
-Open XAMPP Control Panel and start:
+   ```text
+   C:\xampp\htdocs\utswebpro
+   ```
 
-Apache
+3. Start Apache and MySQL from XAMPP Control Panel.
 
-MySQL
+4. Create database and import schema:
+   - Open phpMyAdmin
+   - Create database: `lafdb`
+   - Import: `lafdb.sql`
 
-4️⃣ Import the database
+5. Run in browser:
 
-Open phpMyAdmin
+   ```text
+   http://localhost/utswebpro
+   ```
 
-Create a new database
+## Notes
 
-lost_found_db
+- `index.php` redirects to `auth/login.php`.
+- Admin dashboard is intentionally separate from the shared navbar/footer layout.
 
-Import the SQL file from:
+## Authors
 
-database/lost_found.sql
-5️⃣ Run the project
+- Clay Micholaz
+- Bun Jantolio
+- Egner Constatin
 
-Open your browser:
-
-http://localhost/utswebpro
-📸 Screenshots
-
-You can add screenshots of the application here.
-
-Example:
-
-screenshots/homepage.png
-screenshots/report-item.png
-screenshots/items-list.png
-🎓 Academic Purpose
-
-This project was developed as part of the Mid-Term Examination for the Web Programming course.
-
-The objective of this project is to demonstrate understanding of:
-
-Front-end web development
-
-Responsive UI design
-
-Client-side scripting
-
-Server-side development using PHP
-
-Database interaction with MySQL
-
-👨‍💻 Author
-
-Name: Clay Micholaz, Bun Jantolio, Egner Constatin
-Course: Web Programming
-Project: Mid-Term Exam (UTS Web Programming)
+Project: Mid-Term Web Programming Exam (UTS Web Programming)
