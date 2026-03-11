@@ -44,11 +44,11 @@ try {
                 <a class="btn btn--ghost" href="report_found.php">Report Found</a>
             </div>
             <div class="hero__stats">
-                <a class="stat" href="found_items.php">
+                <a class="stat" href="lost_items.php">
                     <span class="stat__value"><?= number_format($lost_total); ?></span>
                     <span class="stat__label">Lost items</span>
                 </a>
-                <a class="stat" href="lost_items.php">
+                <a class="stat" href="found_items.php">
                     <span class="stat__value"><?= number_format($found_total); ?></span>
                     <span class="stat__label">Found items</span>
                 </a>
