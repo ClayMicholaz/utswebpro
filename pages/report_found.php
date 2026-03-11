@@ -68,7 +68,6 @@ auth::login_check();
                 </div>
                 <div class="actions">
                     <button type="submit" name="submit_report">Submit report</button>
-                    <a href="home.php">Back to home</a>
                 </div>
                 <p class="helper">Keep the details accurate so the owner can verify the claim quickly.</p>
             </form>

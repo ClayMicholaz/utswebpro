@@ -69,6 +69,63 @@ body {
   box-shadow: 0 10px 24px rgba(138, 107, 72, 0.18);
 }
 
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(255, 248, 239, 0.82);
+  border: 1px solid rgba(47, 32, 18, 0.12);
+  box-shadow: 0 8px 20px rgba(76, 56, 36, 0.08);
+}
+
+.filter-form input,
+.filter-form button {
+  border: 1px solid rgba(47, 32, 18, 0.22);
+  border-radius: 999px;
+  padding: 10px 14px;
+  font: inherit;
+  background: rgba(255, 248, 239, 0.96);
+  color: var(--text);
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.filter-form input[type="text"] {
+  min-width: 280px;
+}
+
+.filter-form input[type="date"] {
+  min-width: 180px;
+}
+
+.filter-form input::placeholder {
+  color: var(--muted);
+}
+
+.filter-form input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(196, 138, 74, 0.2);
+}
+
+.filter-form button {
+  font-weight: 600;
+  cursor: pointer;
+  border-color: var(--accent-2);
+  background: linear-gradient(135deg, #d8a36a 0%, #be8550 100%);
+  color: #fff7ee;
+}
+
+.filter-form button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(138, 107, 72, 0.28);
+}
+
 .list {
   list-style: decimal;
   padding-left: 1.5rem;
@@ -149,5 +206,10 @@ body {
 
   .list__link {
     grid-template-columns: 1fr;
+  }
+
+  .filter-form input,
+  .filter-form button {
+    width: 100%;
   }
 }
