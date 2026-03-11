@@ -1,13 +1,13 @@
 <?php
 require_once "../config/database.php";
-session_start();
-if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: change_password.php");
-    exit();
-}
-$email = trim($_POST["email"] ?? "");
-$new_password = trim($_POST["new_password"] ?? "");
-$confirm_password = trim($_POST["confirm_password"] ?? "");
+require_once "../includes/functions.php";
+
+app_start_session();
+app_require_post("change_password.php");
+
+$email = app_post_trim("email");
+$new_password = app_post_trim("new_password");
+$confirm_password = app_post_trim("confirm_password");
 $errors = [];
 if ($email === "") {
     $errors[] = "Email is required.";
@@ -23,23 +23,11 @@ if ($new_password !== $confirm_password) {
 }
 
 if ($new_password !== "") {
-    if (strlen($new_password) < 8) {
-        $errors[] = "Password must be at least 8 characters long.";
-    }
-
-    $has_upper = preg_match("/[A-Z]/", $new_password);
-    $has_lower = preg_match("/[a-z]/", $new_password);
-    $has_digit = preg_match("/[0-9]/", $new_password);
-    $has_symbol = preg_match("/[^A-Za-z0-9]/", $new_password);
-
-    if (!$has_upper || !$has_lower || !$has_digit || !$has_symbol) {
-        $errors[] = "Password must include uppercase, lowercase, number, and symbol.";
-    }
+    $errors = array_merge($errors, app_password_strength_errors($new_password));
 }
 if (count($errors) > 0) {
     $_SESSION["change_password_errors"] = $errors;
-    header("Location: change_password.php");
-    exit();
+    app_redirect("change_password.php");
 }
 try {
 
@@ -52,8 +40,7 @@ try {
 
     if ($result->num_rows === 0) {
         $_SESSION["change_password_errors"] = ["Email not found."];
-        header("Location: change_password.php");
-        exit();
+        app_redirect("change_password.php");
     }
 
     $stmt->close();
@@ -65,19 +52,16 @@ try {
 
     if ($stmt->execute()) {
         $_SESSION["change_password_success"] = "Password successfully changed.";
-        header("Location: change_password.php");
-        exit();
+        app_redirect("change_password.php");
     }
 
     $_SESSION["change_password_errors"] = ["Failed to update password."];
-    header("Location: change_password.php");
-    exit();
+    app_redirect("change_password.php");
 
     $stmt->close();
 
 } catch (Exception $e) {
     $_SESSION["change_password_errors"] = ["Database error."];
-    header("Location: change_password.php");
-    exit();
+    app_redirect("change_password.php");
 }
 ?>

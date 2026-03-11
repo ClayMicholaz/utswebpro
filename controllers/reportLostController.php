@@ -1,72 +1,43 @@
 <?php
 require_once __DIR__ . "/../core/auth.php";
 require_once __DIR__ . "/../config/database.php";
+require_once __DIR__ . "/../includes/functions.php";
 
 auth::login_check();
-
-if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: /utswebpro/pages/report_lost.php");
-    exit();
-}
+app_require_post("/utswebpro/pages/report_lost.php");
 
 $email = $_SESSION["email"] ?? "";
 if ($email === "") {
-    header("Location: /utswebpro/auth/login.php");
-    exit();
+    app_redirect("/utswebpro/auth/login.php");
 }
 
-$item_name = trim($_POST["item_name"] ?? "");
-$category = trim($_POST["category"] ?? "");
-$color = trim($_POST["color"] ?? "");
-$brand = trim($_POST["brand"] ?? "");
-$item_description = trim($_POST["item_description"] ?? "");
-$location_lost = trim($_POST["location_lost"] ?? "");
-$date_lost = trim($_POST["date_lost"] ?? "");
-$report_description = trim($_POST["report_description"] ?? "");
+$item_name = app_post_trim("item_name");
+$category = app_post_trim("category");
+$color = app_post_trim("color");
+$brand = app_post_trim("brand");
+$item_description = app_post_trim("item_description");
+$location_lost = app_post_trim("location_lost");
+$date_lost = app_post_trim("date_lost");
+$report_description = app_post_trim("report_description");
 
 if ($item_name === "" || $location_lost === "" || $date_lost === "") {
-    header("Location: /utswebpro/pages/report_lost.php");
-    exit();
+    app_redirect("/utswebpro/pages/report_lost.php");
 }
 
-$image_path = null;
-if (!empty($_FILES["image"]["name"])) {
-    $upload_dir = __DIR__ . "/../uploads/lost";
-    $tmp_name = $_FILES["image"]["tmp_name"] ?? "";
-    $original_name = $_FILES["image"]["name"] ?? "";
-    $error = $_FILES["image"]["error"] ?? UPLOAD_ERR_NO_FILE;
-
-    if ($error === UPLOAD_ERR_OK && is_uploaded_file($tmp_name)) {
-        $ext = strtolower(pathinfo($original_name, PATHINFO_EXTENSION));
-        $allowed = ["jpg", "jpeg", "png", "gif", "webp"];
-        if (in_array($ext, $allowed, true)) {
-            $image_info = getimagesize($tmp_name);
-            if ($image_info !== false) {
-                $safe_name = bin2hex(random_bytes(8)) . "_" . time() . "." . $ext;
-                $destination = $upload_dir . "/" . $safe_name;
-                if (move_uploaded_file($tmp_name, $destination)) {
-                    $image_path = "uploads/lost/" . $safe_name;
-                }
-            }
-        }
-    }
-}
+$image_path = app_handle_image_upload(
+    "image",
+    __DIR__ . "/../uploads/lost",
+    "uploads/lost"
+);
 
 try {
     $db = new database();
     $db->conn->begin_transaction();
 
-    $stmt = $db->conn->prepare("SELECT id FROM users WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user = $result ? $result->fetch_assoc() : null;
-    $stmt->close();
-
-    if (!$user) {
+    $userId = app_find_user_id_by_email($db->conn, $email);
+    if ($userId === null) {
         $db->conn->rollback();
-        header("Location: /utswebpro/auth/login.php");
-        exit();
+        app_redirect("/utswebpro/auth/login.php");
     }
 
     $stmt = $db->conn->prepare(
@@ -94,7 +65,7 @@ try {
     );
     $stmt->bind_param(
         "iisss",
-        $user["id"],
+        $userId,
         $lost_item_id,
         $location_lost,
         $date_lost,
@@ -107,12 +78,10 @@ try {
 
     $stmt->close();
     $db->conn->commit();
-    header("Location: /utswebpro/pages/home.php");
-    exit();
+    app_redirect("/utswebpro/pages/home.php");
 } catch (Exception $e) {
     if (isset($db) && $db->conn) {
         $db->conn->rollback();
     }
-    header("Location: /utswebpro/pages/report_lost.php");
-    exit();
+    app_redirect("/utswebpro/pages/report_lost.php");
 }

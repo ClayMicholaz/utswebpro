@@ -1,0 +1,115 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Libre+Franklin:wght@400;500;600&display=swap");
+
+:root {
+  --lf-nav-bg: rgba(250, 241, 229, 0.9);
+  --lf-nav-border: rgba(76, 56, 36, 0.18);
+  --lf-nav-text: #2d241c;
+  --lf-nav-accent: #8a6b48;
+  --lf-nav-accent-soft: rgba(138, 107, 72, 0.12);
+  --lf-footer-text: #6b5b4b;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+.lf-nav {
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  backdrop-filter: blur(10px);
+  background: var(--lf-nav-bg);
+  border-bottom: 1px solid var(--lf-nav-border);
+  box-shadow: 0 8px 22px rgba(76, 56, 36, 0.08);
+}
+
+.lf-nav__inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.lf-nav__brand {
+  text-decoration: none;
+  color: var(--lf-nav-text);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.lf-nav__links {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.lf-nav__link {
+  text-decoration: none;
+  color: var(--lf-nav-text);
+  font-family: "Libre Franklin", sans-serif;
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(76, 56, 36, 0.16);
+  background: rgba(255, 248, 239, 0.8);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.lf-nav__link:hover {
+  border-color: rgba(138, 107, 72, 0.4);
+  background: rgba(255, 248, 239, 0.95);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(76, 56, 36, 0.14);
+}
+
+.lf-nav__link.is-active {
+  color: var(--lf-nav-accent);
+  border-color: rgba(138, 107, 72, 0.5);
+  background: var(--lf-nav-accent-soft);
+}
+
+.lf-nav__link--logout {
+  background: linear-gradient(135deg, #9a6d43 0%, #7a5535 100%);
+  color: #fff8ef;
+  border-color: rgba(122, 85, 53, 0.7);
+}
+
+.lf-footer {
+  border-top: 1px solid var(--lf-nav-border);
+  margin-top: 40px;
+  background: rgba(255, 248, 239, 0.45);
+}
+
+.lf-footer__inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 18px 20px;
+  text-align: center;
+  color: var(--lf-footer-text);
+  font-size: 0.9rem;
+  font-family: "Libre Franklin", sans-serif;
+}
+
+@media (max-width: 760px) {
+  .lf-nav__inner {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

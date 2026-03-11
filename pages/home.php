@@ -28,9 +28,11 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Lost and Found</title>
     <link rel="stylesheet" href="../assets/home.css" />
+    <link rel="stylesheet" href="../assets/layout.css" />
 </head>
 
 <body>
+    <?php require_once __DIR__ . "/../includes/navbar.php"; ?>
     <main class="hero">
         <div class="hero__content">
             <p class="hero__eyebrow">Lost it. Found it. Fixed it.</p>
@@ -61,6 +63,7 @@ try {
         </div>
     </main>
 
+    <?php require_once __DIR__ . "/../includes/footer.php"; ?>
     <script type="module" src="../assets/home.js"></script>
 </body>
 

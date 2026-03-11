@@ -61,9 +61,11 @@ $back_link = $type === "lost" ? "lost_items.php" : "found_items.php";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($title, ENT_QUOTES, "UTF-8"); ?></title>
     <link rel="stylesheet" href="../assets/item_detail.css">
+    <link rel="stylesheet" href="../assets/layout.css" />
 </head>
 
 <body>
+    <?php require_once __DIR__ . "/../includes/navbar.php"; ?>
     <main class="page">
         <header class="header">
             <div>
@@ -110,6 +112,7 @@ $back_link = $type === "lost" ? "lost_items.php" : "found_items.php";
             </section>
         <?php endif; ?>
     </main>
+    <?php require_once __DIR__ . "/../includes/footer.php"; ?>
 </body>
 
 </html>

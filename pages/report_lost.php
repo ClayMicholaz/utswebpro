@@ -11,9 +11,11 @@ auth::login_check();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Report Lost Item</title>
     <link rel="stylesheet" href="../assets/report.css">
+    <link rel="stylesheet" href="../assets/layout.css" />
 </head>
 
 <body>
+    <?php require_once __DIR__ . "/../includes/navbar.php"; ?>
     <main class="page">
         <header class="header">
             <div>
@@ -73,6 +75,7 @@ auth::login_check();
             </form>
         </section>
     </main>
+    <?php require_once __DIR__ . "/../includes/footer.php"; ?>
 </body>
 
 </html>

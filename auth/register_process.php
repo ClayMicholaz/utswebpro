@@ -1,17 +1,15 @@
 <?php
-session_start();
 require_once "../config/database.php";
+require_once "../includes/functions.php";
 
-if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: /utswebpro/auth/register.php");
-    exit();
-}
+app_start_session();
+app_require_post("/utswebpro/auth/register.php");
 
 $errors = [];
-$name = trim($_POST["name"] ?? "");
-$email = trim($_POST["email"] ?? "");
-$password = trim($_POST["password"] ?? "");
-$phone = trim($_POST["phone"] ?? "");
+$name = app_post_trim("name");
+$email = app_post_trim("email");
+$password = app_post_trim("password");
+$phone = app_post_trim("phone");
 $confirm_password = $_POST["confirm_password"] ?? "";
 
 if ($name === "") {
@@ -24,18 +22,7 @@ if ($password === "") {
     $errors[] = "Password is required.";
 }
 if ($password !== "") {
-    if (strlen($password) < 8) {
-        $errors[] = "Password must be at least 8 characters long.";
-    }
-
-    $has_upper = preg_match("/[A-Z]/", $password);
-    $has_lower = preg_match("/[a-z]/", $password);
-    $has_digit = preg_match("/[0-9]/", $password);
-    $has_symbol = preg_match("/[^A-Za-z0-9]/", $password);
-
-    if (!$has_upper || !$has_lower || !$has_digit || !$has_symbol) {
-        $errors[] = "Password must include uppercase, lowercase, number, and symbol.";
-    }
+    $errors = array_merge($errors, app_password_strength_errors($password));
 }
 if ($phone === "") {
     $errors[] = "Phone number is required.";
@@ -66,8 +53,7 @@ if (count($errors) === 0) {
 
             if ($stmt->execute()) {
                 $_SESSION["register_success"] = "Registration successful. Please login.";
-                header("Location: /utswebpro/auth/login.php");
-                exit;
+                app_redirect("/utswebpro/auth/login.php");
             } else {
                 $errors[] = "Registration failed. Please try again.";
             }
@@ -83,7 +69,6 @@ if (count($errors) > 0) {
     $_SESSION["register_name"] = $name;
     $_SESSION["register_email"] = $email;
     $_SESSION["register_phone"] = $phone;
-    header("Location: /utswebpro/auth/register.php");
-    exit;
+    app_redirect("/utswebpro/auth/register.php");
 }
 ?>

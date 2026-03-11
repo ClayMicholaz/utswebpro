@@ -43,9 +43,11 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lost Items</title>
     <link rel="stylesheet" href="../assets/items.css">
+    <link rel="stylesheet" href="../assets/layout.css" />
 </head>
 
 <body>
+    <?php require_once __DIR__ . "/../includes/navbar.php"; ?>
     <main class="page">
         <header class="header">
             <div>
@@ -70,7 +72,8 @@ try {
                     <li class="list__item">
                         <a class="list__link" href="item_detail.php?id=<?= (int) $item["id"]; ?>&type=lost">
                             <div class="list__name">#<?= (int) $item["report_id"]; ?> -
-                                <?= htmlspecialchars($item["item_name"], ENT_QUOTES, "UTF-8"); ?></div>
+                                <?= htmlspecialchars($item["item_name"], ENT_QUOTES, "UTF-8"); ?>
+                            </div>
                             <div class="list__meta">
                                 <span>Location:</span>
                                 <?= htmlspecialchars($item["location_lost"], ENT_QUOTES, "UTF-8"); ?>
@@ -85,6 +88,7 @@ try {
             </ol>
         <?php endif; ?>
     </main>
+    <?php require_once __DIR__ . "/../includes/footer.php"; ?>
 </body>
 
 </html>
