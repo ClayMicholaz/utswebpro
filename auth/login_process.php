@@ -13,9 +13,19 @@ if (isset($_POST["login"])) {
     $password = $_POST["password"];
 
     if ($auth->Login($names, $password)) {
-        header("location: /utswebpro/pages/home.php");
+        if (isset($_SESSION["role"]) && $_SESSION["role"] === "admin") {
+            header("Location: /utswebpro/pages/admin_dashboard.php");
+            exit();
+        }
+
+        header("Location: /utswebpro/pages/home.php");
+        exit();
     } else {
-        echo "Login Gagal";
+        $_SESSION["login_error"] = "Incorrect email or password.";
+        header("Location: login.php");
+        exit();
     }
-    var_dump($_POST);
 }
+
+header("Location: login.php");
+exit();

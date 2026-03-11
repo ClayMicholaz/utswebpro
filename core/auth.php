@@ -15,6 +15,7 @@ class auth extends database
 
         if ($user && password_verify($password, $user["password"])) {
             $_SESSION["email"] = $user["email"];
+            $_SESSION["role"] = $user["role"] ?? "user";
             return true;
         }
         return false;

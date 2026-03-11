@@ -1,3 +1,11 @@
+<?php
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
+$login_error = $_SESSION["login_error"] ?? null;
+unset($_SESSION["login_error"]);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,6 +22,10 @@
 <body>
     <div class="login-card">
         <h2>Login System</h2>
+        <?php if ($login_error): ?>
+            <p style="color: #b00020; margin-bottom: 12px;">
+                <?php echo htmlspecialchars($login_error, ENT_QUOTES, 'UTF-8'); ?></p>
+        <?php endif; ?>
         <form action="login_process.php" method="post">
             <input type="text" name="email" placeholder="Email" required>
             <div class="password-field">
