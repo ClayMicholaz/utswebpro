@@ -3,8 +3,8 @@ require_once __DIR__ . "/../core/auth.php";
 require_once __DIR__ . "/../config/database.php";
 auth::login_check();
 
-$items_listed = 0;
-$items_returned = 0;
+$lost_total = 0;
+$found_total = 0;
 
 try {
     $db = new database();
@@ -14,14 +14,9 @@ try {
 
     $result = $db->conn->query("SELECT COUNT(*) AS total FROM found_items");
     $found_total = $result ? (int) $result->fetch_assoc()["total"] : 0;
-
-    $items_listed = $lost_total + $found_total;
-
-    $result = $db->conn->query("SELECT COUNT(*) AS total FROM found_reports WHERE status = 'returned'");
-    $items_returned = $result ? (int) $result->fetch_assoc()["total"] : 0;
 } catch (Exception $e) {
-    $items_listed = 0;
-    $items_returned = 0;
+    $lost_total = 0;
+    $found_total = 0;
 }
 ?>
 
@@ -49,14 +44,14 @@ try {
                 <a class="btn btn--ghost" href="report_found.php">Report Found</a>
             </div>
             <div class="hero__stats">
-                <div>
-                    <span class="stat__value"><?= number_format($items_listed); ?></span>
-                    <span class="stat__label">Items listed</span>
-                </div>
-                <div>
-                    <span class="stat__value"><?= number_format($items_returned); ?></span>
-                    <span class="stat__label">Items returned</span>
-                </div>
+                <a class="stat" href="found_items.php">
+                    <span class="stat__value"><?= number_format($lost_total); ?></span>
+                    <span class="stat__label">Lost items</span>
+                </a>
+                <a class="stat" href="lost_items.php">
+                    <span class="stat__value"><?= number_format($found_total); ?></span>
+                    <span class="stat__label">Found items</span>
+                </a>
             </div>
         </div>
 
