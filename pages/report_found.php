@@ -65,7 +65,10 @@ auth::login_check();
                     </div>
                     <div class="field span-2">
                         <label for="image">Upload item photo (optional)</label>
-                        <input type="file" id="image" name="image" accept="image/*">
+                        <div class="file-actions">
+                            <input type="file" id="image" name="image" accept="image/*">
+                            <button type="button" data-clear-file="#image">Delete image</button>
+                        </div>
                     </div>
                 </div>
                 <div class="actions">
@@ -76,6 +79,16 @@ auth::login_check();
         </section>
     </main>
     <?php require_once __DIR__ . "/../includes/footer.php"; ?>
+    <script>
+        document.querySelectorAll("[data-clear-file]").forEach((button) => {
+            button.addEventListener("click", () => {
+                const target = document.querySelector(button.dataset.clearFile);
+                if (target) {
+                    target.value = "";
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

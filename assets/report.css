@@ -94,6 +94,33 @@ body {
   font-size: 0.95rem;
 }
 
+.file-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.file-actions input[type="file"] {
+  flex: 1;
+  min-width: 0;
+}
+
+.file-actions button {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(47, 32, 18, 0.25);
+  background: transparent;
+  color: var(--accent-2);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.file-actions button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 .field textarea {
   min-height: 120px;
   resize: vertical;
